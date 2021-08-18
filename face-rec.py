@@ -8,7 +8,6 @@ from pathlib import Path
 import socket
 import time
 import matplotlib.pyplot as plt
-
 # Get a reference to webcam #0 (the default one)
 try:
     video_capture = cv2.VideoCapture(0)
@@ -22,17 +21,17 @@ live_face_names = []
 dirname = os.path.dirname(__file__)
 path = os.path.join(dirname, 'known_people/')
 
-#make an array of all the saved jpg images paths
+# make an array of all the saved jpg images paths
 images_paths = [f for f in glob.glob(path+'*.jpg')]
 
 for i in range(len(images_paths)):
      
-    #load images to face rec liberary
-    #add encodings to known_faces_encodings
+    # load images to face rec liberary
+    # add encodings to known_faces_encodings
     known_face_encodings.append(face_recognition.face_encodings(
         face_recognition.load_image_file(images_paths[i]))[0])
     
-    #add names to each face from its path
+    # add names to each face from its path
     images_paths[i] = images_paths[i].replace(".jpg","")
     known_face_names.append(Path(images_paths[i]).name)
     
