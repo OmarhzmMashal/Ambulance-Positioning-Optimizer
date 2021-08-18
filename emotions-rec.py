@@ -21,27 +21,31 @@ from tensorflow.keras.callbacks import Callback, EarlyStopping
 from tensorflow.python.client import device_lib
 
 print(device_lib.list_local_devices())
-
 print(len(tf.config.experimental.list_physical_devices('GPU')))
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-d = pd.read_csv(THIS_FOLDER + "/data.csv")
-modelsave=  os.path.join(THIS_FOLDER, 'emModelV5.h5')
-modelweights =  os.path.join(THIS_FOLDER, 'emWeightsV5.h5')
+
+# read data
+data = pd.read_csv(THIS_FOLDER + "/data.csv")
+
+# folder variables for saving
+modelsave = os.path.join(THIS_FOLDER, 'emModelV5.h5')
+modelweights = os.path.join(THIS_FOLDER, 'emWeightsV5.h5')
 
 #choose only happy, sad, and neutral
-lbl_index=[3,4,6]
-d = d[d.emotion.isin(lbl_index)]
-label = d['emotion']
-img = d['pixels']  
+lbl_index = [3,4,6]
+data = data[data.emotion.isin(lbl_index)]
+
+label = data['emotion']
+img = data['pixels']  
+
+# create an array numbers representing images from raw data
 img = img.apply(lambda x: np.array(x.split(' ')).reshape(48, 48).astype('float32'))
 img = np.stack(img, axis=0)
+
+# encode 
 le = LabelEncoder()
 label = le.fit_transform(label)
-print(img.shape)
-sns.countplot(label)
-plt.show()
-
 label = to_categorical(label) #one hot encoding
 
 X_train, X_valid, y_train, y_valid = train_test_split(img, label,
