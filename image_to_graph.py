@@ -68,14 +68,11 @@ class ImageToGraph:
                 nx.draw(g, idx_locs, node_color='red', node_size=[v / 10 for v in pixels])
                 plt.show()
 
-# Transforms images to a PyTorch Tensor
-tensor_transform = transforms.ToTensor()
 
-# Download the MNIST Dataset
 dataset = datasets.MNIST(root = "./data",
                          train = True,
                          download = True,
-                         transform = tensor_transform)
+                         transform = transforms.ToTensor())
 
 images = []
 num = 0
